@@ -33,12 +33,21 @@ export default async function DashboardLayout({
     if (currentUser.id === "dev-admin") {
         const headersList = await headers();
         const fullPath = headersList.get("x-url") || "";
-        // fallback to super_admin unless specific vendor routes are hit
+
+        // Default to super_admin in dev mode
         role = "super_admin";
 
-        // If we are on vendor routes, act as vendor_admin for the UI
-        const vendorRoutes = ["/dashboard/restaurants", "/dashboard/events", "/dashboard/halls"];
-        if (vendorRoutes.some(route => fullPath.includes(route))) {
+        // Logic check for B2B portal vs Admin portal
+        if (fullPath.includes("/dashboard/admin")) {
+            role = "super_admin";
+        } else if (
+            fullPath.includes("/dashboard/restaurants") ||
+            fullPath.includes("/dashboard/events") ||
+            fullPath.includes("/dashboard/halls") ||
+            fullPath.includes("/dashboard/staff") ||
+            fullPath.includes("/dashboard/tickets") ||
+            fullPath.includes("/dashboard/payouts")
+        ) {
             role = "vendor_admin";
         }
     } else {

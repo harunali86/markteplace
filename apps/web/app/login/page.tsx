@@ -41,6 +41,21 @@ export default function LoginPage({
                             <Button formAction={login} className="w-full">
                                 Login
                             </Button>
+                            <div className="relative my-2">
+                                <div className="absolute inset-0 flex items-center">
+                                    <span className="w-full border-t" />
+                                </div>
+                                <div className="relative flex justify-center text-xs uppercase">
+                                    <span className="bg-background px-2 text-muted-foreground">
+                                        Or try demo
+                                    </span>
+                                </div>
+                            </div>
+                            <Link href="/dashboard" className="w-full">
+                                <Button variant="outline" className="w-full">
+                                    Guest Admin Access
+                                </Button>
+                            </Link>
                         </div>
                         {searchParams?.error && (
                             <p className="text-sm text-red-500 text-center">

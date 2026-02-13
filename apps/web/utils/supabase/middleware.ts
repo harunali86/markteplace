@@ -40,7 +40,7 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser();
 
-    // DEVELOPMENT BYPASS
+    // DEVELOPMENT BYPASS: Allow access to all routes if enabled
     const isDevBypass = true;
 
     if (
