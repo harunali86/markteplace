@@ -7,10 +7,10 @@ test.describe('Public Marketplace Visibility', () => {
         // Check title
         await expect(page).toHaveTitle(/Doossh/);
 
-        // Verify presence of main categories (in navbar or cards)
-        await expect(page.getByText('Restaurants', { exact: false })).toBeVisible();
-        await expect(page.getByText('Nightlife', { exact: false })).toBeVisible();
-        await expect(page.getByText('Party Halls', { exact: false })).toBeVisible();
+        // Verify presence of main categories in navbar
+        await expect(page.getByRole('navigation').getByText('Restaurants', { exact: false })).toBeVisible();
+        await expect(page.getByRole('navigation').getByText('Nightlife', { exact: false })).toBeVisible();
+        await expect(page.getByRole('navigation').getByText('Party Halls', { exact: false })).toBeVisible();
 
         // Check if hero action button exists
         await expect(page.getByRole('link', { name: /Browse Marketplace/i })).toBeVisible();
