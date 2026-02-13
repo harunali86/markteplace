@@ -1,0 +1,52 @@
+{
+    "tech_stack": [
+        "TypeScript",
+        "Next.js 16",
+        "Supabase",
+        "Tailwind CSS",
+        "Tailwind Config",
+        "Turborepo",
+        "Zod",
+        "React Hook Form"
+    ],
+    "features": [
+        {
+            "name": "Public Restaurant Browsing",
+            "description": "Public views for discovering and viewing published restaurant details with optimized caching.",
+            "files": [
+                "apps/web/lib/api/restaurants.ts",
+                "apps/web/app/page.tsx",
+                "apps/web/app/browse/page.tsx",
+                "apps/web/app/browse/restaurants/[id]/page.tsx"
+            ]
+        },
+        {
+            "name": "Vendor Restaurant Management (CRUD)",
+            "description": "Private vendor dashboard pages for managing restaurant listings, including creation, updates, and deletion.",
+            "files": [
+                "apps/web/app/dashboard/restaurants/page.tsx",
+                "apps/web/app/dashboard/restaurants/[id]/page.tsx",
+                "apps/web/app/dashboard/restaurants/new/page.tsx",
+                "apps/web/app/dashboard/restaurants/actions.ts",
+                "apps/web/components/restaurants/restaurant-form.tsx"
+            ]
+        },
+        {
+            "name": "Media Upload Service",
+            "description": "Client-side image upload component using Supabase Storage for venue cover images.",
+            "files": [
+                "apps/web/components/ui/image-upload.tsx",
+                "apps/web/utils/supabase/client.ts"
+            ]
+        },
+        {
+            "name": "Multi-tenant Auth & Tenancy Control",
+            "description": "Supabase-based authentication with RLS and vendor membership checks for data isolation.",
+            "files": [
+                "apps/web/middleware.ts",
+                "apps/web/app/(dashboard)/layout.tsx",
+                "apps/web/utils/supabase/server.ts"
+            ]
+        }
+    ]
+}

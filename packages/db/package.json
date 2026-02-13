@@ -1,0 +1,32 @@
+{
+    "name": "@doossh/db",
+    "version": "0.0.0",
+    "private": true,
+    "license": "MIT",
+    "exports": {
+        ".": "./src/index.ts",
+        "./client": "./src/client.ts",
+        "./schema": "./src/schema.ts"
+    },
+    "scripts": {
+        "clean": "rm -rf .turbo node_modules dist",
+        "lint": "ESLINT_USE_FLAT_CONFIG=false eslint src/**/*.{ts,tsx}",
+        "db:push": "tsx scripts/migrate.ts",
+        "db:deploy:rpc": "tsx scripts/deploy_rpc.ts",
+        "db:deploy:marketplace": "tsx scripts/deploy_marketplace.ts",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@supabase/ssr": "^0.1.0",
+        "@supabase/supabase-js": "^2.39.0",
+        "uuid": "^13.0.0",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@doossh/eslint-config": "*",
+        "@doossh/typescript-config": "*",
+        "@types/uuid": "^10.0.0",
+        "tsx": "^4.21.0",
+        "typescript": "^5.3.3"
+    }
+}

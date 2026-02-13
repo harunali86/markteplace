@@ -1,0 +1,17 @@
+# CodeRabbit Configuration
+# For more info: https://docs.coderabbit.ai/configuration/all-configuration-options
+
+language: "en-US"
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  complexity_score: true
+  auto_review:
+    enabled: true
+    draft: false
+  tools:
+    shellcheck:
+      enabled: true
+    revive:
+      enabled: true
