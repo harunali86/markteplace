@@ -2,18 +2,26 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
 import { type Restaurant } from "@doossh/db";
 
-// Use a direct client for public data to allow for static generation
-// This avoids using cookies() which opts into dynamic rendering and fails at build time in caches
-const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getPublicSupabaseClient() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnonKey) {
+        console.error(
+            "Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+        );
+        return null;
+    }
+    return createSupabaseClient(supabaseUrl, supabaseAnonKey);
+}
 
 // Cache Keys
 const RESTAURANTS_CACHE_TAG = "restaurants";
 
 export const getPublishedRestaurants = unstable_cache(
     async () => {
+        const supabase = getPublicSupabaseClient();
+        if (!supabase) return [];
+
         const { data, error } = await supabase
             .from("restaurants")
             .select("*, vendor:vendors(name, slug, logo_url)")
@@ -36,6 +44,9 @@ export const getPublishedRestaurants = unstable_cache(
 
 export const getRestaurantById = unstable_cache(
     async (id: string) => {
+        const supabase = getPublicSupabaseClient();
+        if (!supabase) return null;
+
         const { data, error } = await supabase
             .from("restaurants")
             .select("*, vendor:vendors(name, slug, logo_url)")

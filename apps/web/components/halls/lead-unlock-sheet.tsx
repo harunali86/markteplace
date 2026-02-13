@@ -31,9 +31,25 @@ export function LeadUnlockSheet({ lead, onUnlock }: { lead: Lead; onUnlock: (id:
             const data = await response.json();
             if (!response.ok) throw new Error(data.error);
 
+            if (data.checkoutMode === "manual") {
+                toast.success("Lead unlocked in manual mode.");
+                onUnlock(lead.id);
+                window.location.reload();
+                return;
+            }
+
+            const checkoutKey =
+                data.checkoutKey || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+            if (!checkoutKey) {
+                throw new Error("Payment gateway key is missing.");
+            }
+            if (!(window as any).Razorpay) {
+                throw new Error("Payment SDK not loaded. Please refresh and try again.");
+            }
+
             // 2. Razorpay Checkout
             const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                key: checkoutKey,
                 amount: data.amount,
                 currency: "INR",
                 name: "Doossh Marketplace",

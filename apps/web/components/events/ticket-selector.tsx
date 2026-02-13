@@ -55,9 +55,24 @@ export function TicketSelector({ eventId, ticketTypes, eventName }: { eventId: s
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || "Purchase failed");
 
+            if (data.checkoutMode === "manual") {
+                toast.success("Order placed in manual mode.");
+                window.location.href = `/browse/events/${eventId}/success?order_id=${data.orderId}`;
+                return;
+            }
+
+            const checkoutKey =
+                data.checkoutKey || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+            if (!checkoutKey) {
+                throw new Error("Payment gateway key is missing.");
+            }
+            if (!(window as any).Razorpay) {
+                throw new Error("Payment SDK not loaded. Please refresh and try again.");
+            }
+
             // Razorpay Checkout
             const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                key: checkoutKey,
                 amount: data.amount,
                 currency: "INR",
                 name: "Doossh Marketplace",

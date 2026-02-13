@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "../../../utils/supabase/server";
-import { getRazorpay } from "../../../lib/razorpay";
-import { restaurantSchema } from "@doossh/db/schema";
+import { getRazorpay, getRazorpayCheckoutKey, isRazorpayConfigured } from "../../../lib/razorpay";
 
 export async function POST(req: Request) {
     try {
@@ -49,14 +48,20 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "No capacity available for this slot" }, { status: 409 });
         }
 
-        // 3. Create Razorpay Order
-        const razorpay = getRazorpay();
         const bookingFee = 50 * 100; // In paise
-        const razorpayOrder = await razorpay.orders.create({
-            amount: bookingFee,
-            currency: "INR",
-            receipt: `rcpt_${Date.now()}`,
-        });
+        const paymentGatewayEnabled = isRazorpayConfigured();
+        const checkoutKey = getRazorpayCheckoutKey();
+        let providerOrderId = `mock_booking_${Date.now()}`;
+
+        if (paymentGatewayEnabled) {
+            const razorpay = getRazorpay();
+            const razorpayOrder = await razorpay.orders.create({
+                amount: bookingFee,
+                currency: "INR",
+                receipt: `rcpt_${Date.now()}`,
+            });
+            providerOrderId = razorpayOrder.id;
+        }
 
         // 4. Create internal Payment record
         const { data: payment, error: pError } = await supabase
@@ -65,9 +70,9 @@ export async function POST(req: Request) {
                 amount: bookingFee / 100,
                 currency: "INR",
                 provider: "razorpay",
-                provider_order_id: razorpayOrder.id,
+                provider_order_id: providerOrderId,
                 user_id: user.id,
-                status: "pending",
+                status: paymentGatewayEnabled ? "pending" : "captured",
             })
             .select()
             .single();
@@ -84,7 +89,7 @@ export async function POST(req: Request) {
                 slot_id: slotId,
                 guest_count: guestCount,
                 booking_date: date,
-                status: "pending",
+                status: paymentGatewayEnabled ? "pending" : "confirmed",
                 payment_id: payment.id,
             })
             .select()
@@ -93,10 +98,12 @@ export async function POST(req: Request) {
         if (bookingErr) throw bookingErr;
 
         return NextResponse.json({
-            orderId: razorpayOrder.id,
+            orderId: providerOrderId,
             amount: bookingFee,
             bookingId: booking.id,
             restaurantName: restaurant.name,
+            checkoutMode: paymentGatewayEnabled ? "razorpay" : "manual",
+            checkoutKey,
         });
 
     } catch (err: any) {

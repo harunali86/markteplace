@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "../../../../utils/supabase/server";
-import { getRazorpay } from "../../../../lib/razorpay";
+import { getRazorpay, getRazorpayCheckoutKey, isRazorpayConfigured } from "../../../../lib/razorpay";
 
 export async function POST(req: Request) {
     try {
@@ -41,13 +41,19 @@ export async function POST(req: Request) {
             orderItems.push({ ...type, requestedQty: item.quantity });
         }
 
-        // 3. Create Razorpay Order
-        const razorpay = getRazorpay();
-        const razorpayOrder = await razorpay.orders.create({
-            amount: totalAmountPaise,
-            currency: "INR",
-            receipt: `event_rcpt_${Date.now()}`,
-        });
+        const paymentGatewayEnabled = isRazorpayConfigured();
+        const checkoutKey = getRazorpayCheckoutKey();
+        let providerOrderId = `mock_event_${Date.now()}`;
+
+        if (paymentGatewayEnabled) {
+            const razorpay = getRazorpay();
+            const razorpayOrder = await razorpay.orders.create({
+                amount: totalAmountPaise,
+                currency: "INR",
+                receipt: `event_rcpt_${Date.now()}`,
+            });
+            providerOrderId = razorpayOrder.id;
+        }
 
         // 4. Create Internal Payment & Order
         const { data: payment } = await supabase
@@ -56,9 +62,9 @@ export async function POST(req: Request) {
                 amount: totalAmountPaise / 100,
                 currency: "INR",
                 provider: "razorpay",
-                provider_order_id: razorpayOrder.id,
+                provider_order_id: providerOrderId,
                 user_id: user.id,
-                status: "pending",
+                status: paymentGatewayEnabled ? "pending" : "captured",
             })
             .select()
             .single();
@@ -70,16 +76,18 @@ export async function POST(req: Request) {
                 event_id: eventId,
                 payment_id: payment!.id,
                 total_amount: totalAmountPaise / 100,
-                status: "pending",
+                status: paymentGatewayEnabled ? "pending" : "paid",
             })
             .select()
             .single();
 
         return NextResponse.json({
-            orderId: razorpayOrder.id,
+            orderId: providerOrderId,
             amount: totalAmountPaise,
             internalOrderId: order!.id,
             eventName: event.name,
+            checkoutMode: paymentGatewayEnabled ? "razorpay" : "manual",
+            checkoutKey,
         });
 
     } catch (err: any) {

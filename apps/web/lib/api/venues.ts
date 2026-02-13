@@ -1,11 +1,17 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
 
-// Use a direct client for public data to allow for static generation
-const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getPublicSupabaseClient() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnonKey) {
+        console.error(
+            "Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+        );
+        return null;
+    }
+    return createSupabaseClient(supabaseUrl, supabaseAnonKey);
+}
 
 // Cache Keys
 const VENUES_CACHE_TAG = "venues";
@@ -15,6 +21,9 @@ const VENUES_CACHE_TAG = "venues";
  */
 export const getPublishedRestaurants = unstable_cache(
     async () => {
+        const supabase = getPublicSupabaseClient();
+        if (!supabase) return [];
+
         const { data, error } = await supabase
             .from("restaurants")
             .select("*, vendor:vendors(name, slug, logo_url)")
@@ -40,6 +49,9 @@ export const getPublishedRestaurants = unstable_cache(
  */
 export const getPublishedClubs = unstable_cache(
     async () => {
+        const supabase = getPublicSupabaseClient();
+        if (!supabase) return [];
+
         const { data, error } = await supabase
             .from("clubs")
             .select("*, vendor:vendors(name, slug, logo_url)")
@@ -65,6 +77,9 @@ export const getPublishedClubs = unstable_cache(
  */
 export const getPublishedHalls = unstable_cache(
     async () => {
+        const supabase = getPublicSupabaseClient();
+        if (!supabase) return [];
+
         const { data, error } = await supabase
             .from("party_halls")
             .select("*, vendor:vendors(name, slug, logo_url)")
@@ -89,6 +104,9 @@ export const getPublishedHalls = unstable_cache(
  * Fetch a single club by ID.
  */
 export async function getClubById(id: string) {
+    const supabase = getPublicSupabaseClient();
+    if (!supabase) return null;
+
     const { data, error } = await supabase
         .from("clubs")
         .select("*, vendor:vendors(name, slug, logo_url)")
@@ -107,6 +125,9 @@ export async function getClubById(id: string) {
  * Fetch a single party hall by ID.
  */
 export async function getHallById(id: string) {
+    const supabase = getPublicSupabaseClient();
+    if (!supabase) return null;
+
     const { data, error } = await supabase
         .from("party_halls")
         .select("*, vendor:vendors(name, slug, logo_url)")
