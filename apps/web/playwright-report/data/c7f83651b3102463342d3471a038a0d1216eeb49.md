@@ -1,0 +1,158 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - link "DOOSSH" [ref=e6] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e7]: DOOSSH
+          - navigation [ref=e8]:
+            - link "Browse All" [ref=e9] [cursor=pointer]:
+              - /url: /browse
+            - link "Restaurants" [ref=e10] [cursor=pointer]:
+              - /url: /browse?category=restaurants
+            - link "Nightlife" [ref=e11] [cursor=pointer]:
+              - /url: /browse?category=clubs
+            - link "Party Halls" [ref=e12] [cursor=pointer]:
+              - /url: /browse?category=halls
+        - generic [ref=e13]:
+          - link "Log in" [ref=e14] [cursor=pointer]:
+            - /url: /login
+            - button "Log in" [ref=e15]
+          - link "List Your Venue" [ref=e16] [cursor=pointer]:
+            - /url: /onboarding
+            - button "List Your Venue" [ref=e17]
+    - main [ref=e18]:
+      - generic [ref=e21]:
+        - generic [ref=e22]: The Ultimate Marketplace
+        - heading "Experience the Unforgettable" [level=1] [ref=e23]
+        - paragraph [ref=e24]: Find the perfect spot for every occasion. From VIP club experiences to royal ballroom celebrations and fine dining.
+        - generic [ref=e25]:
+          - link "Browse Marketplace" [ref=e26] [cursor=pointer]:
+            - /url: /browse
+            - button "Browse Marketplace" [ref=e27]
+          - link "Partner with Us" [ref=e28] [cursor=pointer]:
+            - /url: /onboarding
+            - button "Partner with Us" [ref=e29]
+      - generic [ref=e31]:
+        - link "Dine Book tables at top restaurants Explore" [ref=e32] [cursor=pointer]:
+          - /url: /browse?category=restaurants
+          - generic [ref=e34]:
+            - img [ref=e36]
+            - generic [ref=e39]:
+              - heading "Dine" [level=3] [ref=e40]
+              - paragraph [ref=e41]: Book tables at top restaurants
+            - generic [ref=e43]:
+              - text: Explore
+              - img [ref=e44]
+        - link "Party VIP tickets for premier clubs Explore" [ref=e46] [cursor=pointer]:
+          - /url: /browse?category=clubs
+          - generic [ref=e48]:
+            - img [ref=e50]
+            - generic [ref=e54]:
+              - heading "Party" [level=3] [ref=e55]
+              - paragraph [ref=e56]: VIP tickets for premier clubs
+            - generic [ref=e58]:
+              - text: Explore
+              - img [ref=e59]
+        - link "Celebrate Discover magnificent party halls Explore" [ref=e61] [cursor=pointer]:
+          - /url: /browse?category=halls
+          - generic [ref=e63]:
+            - img [ref=e65]
+            - generic [ref=e69]:
+              - heading "Celebrate" [level=3] [ref=e70]
+              - paragraph [ref=e71]: Discover magnificent party halls
+            - generic [ref=e73]:
+              - text: Explore
+              - img [ref=e74]
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - heading "Featured Spots" [level=2] [ref=e79]
+            - paragraph [ref=e80]: Curated premium experiences across our marketplace verticals.
+          - link "View All Venues" [ref=e81] [cursor=pointer]:
+            - /url: /browse
+            - button "View All Venues" [ref=e82]:
+              - text: View All Venues
+              - img
+        - generic [ref=e83]:
+          - link "The Grand Curry restaurant The Grand Curry 4.9 Connaught Place, Delhi ₹undefined Book Now" [ref=e84] [cursor=pointer]:
+            - /url: /browse/restaurants/22222222-2222-2222-2222-222222222221
+            - generic [ref=e85]:
+              - img "The Grand Curry" [ref=e86]
+              - generic [ref=e88]: restaurant
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - heading "The Grand Curry" [level=4] [ref=e91]
+                - generic [ref=e92]:
+                  - img [ref=e93]
+                  - generic [ref=e95]: "4.9"
+              - generic [ref=e96]:
+                - img [ref=e97]
+                - generic [ref=e100]: Connaught Place, Delhi
+              - generic [ref=e101]:
+                - generic [ref=e102]: ₹undefined
+                - generic [ref=e103]: Book Now
+          - link "Sushi Haven restaurant Sushi Haven 4.9 Lower Parel, Mumbai ₹undefined Book Now" [ref=e104] [cursor=pointer]:
+            - /url: /browse/restaurants/22222222-2222-2222-2222-222222222222
+            - generic [ref=e105]:
+              - img "Sushi Haven" [ref=e106]
+              - generic [ref=e108]: restaurant
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - heading "Sushi Haven" [level=4] [ref=e111]
+                - generic [ref=e112]:
+                  - img [ref=e113]
+                  - generic [ref=e115]: "4.9"
+              - generic [ref=e116]:
+                - img [ref=e117]
+                - generic [ref=e120]: Lower Parel, Mumbai
+              - generic [ref=e121]:
+                - generic [ref=e122]: ₹undefined
+                - generic [ref=e123]: Book Now
+    - contentinfo [ref=e124]:
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]:
+            - heading "DOOSSH" [level=3] [ref=e128]
+            - paragraph [ref=e129]: The world's first integrated marketplace for dining, nightlife, and celebrations. Premium venues, verified experiences.
+          - generic [ref=e130]:
+            - heading "Company" [level=4] [ref=e131]
+            - list [ref=e132]:
+              - listitem [ref=e133]:
+                - link "About Us" [ref=e134] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e135]:
+                - link "Contact" [ref=e136] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e137]:
+                - link "Careers" [ref=e138] [cursor=pointer]:
+                  - /url: /careers
+          - generic [ref=e139]:
+            - heading "Partners" [level=4] [ref=e140]
+            - list [ref=e141]:
+              - listitem [ref=e142]:
+                - link "List Venue" [ref=e143] [cursor=pointer]:
+                  - /url: /onboarding
+              - listitem [ref=e144]:
+                - link "Vendor Portal" [ref=e145] [cursor=pointer]:
+                  - /url: /dashboard/vendor
+          - generic [ref=e146]:
+            - heading "Legal" [level=4] [ref=e147]
+            - list [ref=e148]:
+              - listitem [ref=e149]:
+                - link "Terms of Service" [ref=e150] [cursor=pointer]:
+                  - /url: /terms
+              - listitem [ref=e151]:
+                - link "Privacy Policy" [ref=e152] [cursor=pointer]:
+                  - /url: /privacy
+        - generic [ref=e153]:
+          - paragraph [ref=e154]: © 2026 Doossh Marketplace Inc. All rights reserved.
+          - generic [ref=e155]:
+            - generic [ref=e156]: English (US)
+            - generic [ref=e157]: INR (₹)
+  - alert [ref=e158]
+```
